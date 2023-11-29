@@ -1,0 +1,20 @@
+<form (submit)="findUser()" class="flex w-full justify-center md:w-3/4">
+  <input
+    type="text"
+    name="username"
+    class="p-4 rounded-lg border border-black mx-4 w-2/3"
+    [(ngModel)]="username"
+    (input)="onInputChange()"
+  />
+  <button
+    type="Submit"
+    [disabled]="isSubmitDisabled"
+    [ngClass]="{
+      'bg-blue-500': !isSubmitDisabled,
+      'bg-gray-300': isSubmitDisabled
+    }"
+    class="text-white rounded-lg p-4"
+  >
+    {{ !isLoading ? "Search" : "Searching..." }}
+  </button>
+</form>

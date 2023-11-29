@@ -1,19 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { tap, throwError } from 'rxjs';
+import { RepoDetailsInterface } from '../utils/interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
+  constructor(private httpClient: HttpClient) {}
 
-  constructor(
-    private httpClient: HttpClient
-  ) { }
-
-  getUser(githubUsername: string) {
-    return this.httpClient.get(`https://api.github.com/users/${githubUsername}`);
+  getUser(githubUsername: String) {
+    return this.httpClient.get(
+      `https://api.github.com/users/${githubUsername}`
+    );
   }
 
-  // implement getRepos method by referring to the documentation. Add proper types for the return type and params 
+  getRepos(githubUsername: String, page: Number, limit: Number) {
+    return this.httpClient.get<RepoDetailsInterface[] | null>(
+      `https://api.github.com/users/${githubUsername}/repos?per_page=${limit}&page=${page}`
+    );
+  }
+
+  getLanguages(url: String | any) {
+    return this.httpClient.get(`${url}/languages`);
+  }
 }
