@@ -18,13 +18,12 @@ export class UserInputComponent implements OnInit {
 
   userDetails: UserDetailsInterface | null = null;
 
-  username: string = 'johnpapa'; // Initial username
+  username: string = 'johnpapa';
   isSubmitDisabled: boolean = true;
   isLoading: boolean = false;
   userNotFound: boolean = false;
 
   ngOnInit() {
-    // Call findUser() initially with the default username
     this.findUser();
   }
 
@@ -34,7 +33,6 @@ export class UserInputComponent implements OnInit {
 
   findUser() {
     this.isLoading = true;
-    // console.log('this.username', this.username);
     this.apiService
       .getUser(this.username.trim())
       .pipe(

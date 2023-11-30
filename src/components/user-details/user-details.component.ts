@@ -4,7 +4,7 @@ import {
   RepoDetailsInterface,
   UserDetailsInterface,
 } from 'src/app/utils/interface';
-import { catchError, flatMap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { throwError, forkJoin } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ApiService } from 'src/app/services/api.service';
@@ -29,6 +29,7 @@ export class UserDetailsComponent implements OnInit {
   pagesToShow: number[] = [];
   isLoading: boolean = false;
   userNotFound: boolean = false;
+
   ngOnInit(): void {
     this.dataService.userNotFound$.subscribe((value) => {
       this.userNotFound = value;
@@ -76,10 +77,6 @@ export class UserDetailsComponent implements OnInit {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
       this.generatePageNumbers();
-      // if (page > 9) {
-      //   this.pagesToShow = Array.from({ length: page + 10 }, (_, i) => i + 10);
-      // }
-      console.log('this.currentPage in pageno', this.currentPage);
       this.fetchRepoDetails();
     }
   }
@@ -87,7 +84,6 @@ export class UserDetailsComponent implements OnInit {
   previousPage(): void {
     if (this.currentPage > 0) {
       this.currentPage--;
-      console.log('this.currentPage in previouspage', this.currentPage);
       this.fetchRepoDetails();
     }
   }
@@ -95,7 +91,6 @@ export class UserDetailsComponent implements OnInit {
   nextPage(): void {
     if (this.currentPage + 1 < this.totalPages) {
       this.currentPage++;
-      console.log('this.currentPage in nextpage', this.currentPage);
       this.fetchRepoDetails();
     }
   }

@@ -7,6 +7,7 @@ import { UserDetailsInterface } from '../../app/utils/interface';
 })
 export class DataService {
   constructor() {}
+
   private userDetailsSubject = new BehaviorSubject<UserDetailsInterface | null>(
     null
   );
