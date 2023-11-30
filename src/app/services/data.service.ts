@@ -12,7 +12,14 @@ export class DataService {
   );
   public userDetails$ = this.userDetailsSubject.asObservable();
 
+  private userNotFoundSubject = new BehaviorSubject<boolean>(false);
+  public userNotFound$ = this.userNotFoundSubject.asObservable();
+
   setUserDetails(userDetails: UserDetailsInterface | null) {
     this.userDetailsSubject.next(userDetails);
+  }
+
+  setUserNotFound(value: boolean) {
+    this.userNotFoundSubject.next(value);
   }
 }

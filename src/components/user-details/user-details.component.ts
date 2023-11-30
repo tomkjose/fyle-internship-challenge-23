@@ -4,7 +4,7 @@ import {
   RepoDetailsInterface,
   UserDetailsInterface,
 } from 'src/app/utils/interface';
-import { catchError } from 'rxjs/operators';
+import { catchError, flatMap } from 'rxjs/operators';
 import { throwError, forkJoin } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ApiService } from 'src/app/services/api.service';
@@ -28,8 +28,12 @@ export class UserDetailsComponent implements OnInit {
   repoDetails: RepoDetailsInterface[] | null = [];
   pagesToShow: number[] = [];
   isLoading: boolean = false;
-
+  userNotFound: boolean = false;
   ngOnInit(): void {
+    this.dataService.userNotFound$.subscribe((value) => {
+      this.userNotFound = value;
+    });
+    // console.log('this.userNotFound', this.userNotFound);
     this.dataService.userDetails$.subscribe(
       (userDetails: UserDetailsInterface | null) => {
         this.userDetails = userDetails;
