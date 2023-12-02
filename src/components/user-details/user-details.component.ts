@@ -5,9 +5,10 @@ import {
   UserDetailsInterface,
 } from 'src/app/utils/interface';
 import { catchError } from 'rxjs/operators';
-import { throwError, forkJoin } from 'rxjs';
+import { throwError, forkJoin, of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ApiService } from 'src/app/services/api.service';
+import { ToastService } from '../../app/services/toast.service';
 
 @Component({
   selector: 'app-user-details',
@@ -15,11 +16,6 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./user-details.component.scss'],
 })
 export class UserDetailsComponent implements OnInit {
-  constructor(
-    private dataService: DataService,
-    private apiService: ApiService
-  ) {}
-
   limit: number = 6;
   currentPage: number = 1;
   pageSize: number = 10;
@@ -29,12 +25,19 @@ export class UserDetailsComponent implements OnInit {
   pagesToShow: number[] = [];
   isLoading: boolean = false;
   userNotFound: boolean = false;
+  copyMessage: string = '';
+
+  constructor(
+    private dataService: DataService,
+    private apiService: ApiService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.dataService.userNotFound$.subscribe((value) => {
       this.userNotFound = value;
     });
-    // console.log('this.userNotFound', this.userNotFound);
+
     this.dataService.userDetails$.subscribe(
       (userDetails: UserDetailsInterface | null) => {
         this.userDetails = userDetails;
@@ -95,6 +98,35 @@ export class UserDetailsComponent implements OnInit {
     }
   }
 
+  copyToClipboard(): void {
+    if (this.userDetails && this.userDetails.html_url) {
+      const el = document.createElement('textarea');
+      el.value = this.userDetails.html_url;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+
+      this.copyMessage = 'Copied!';
+      this.toastService.showToast(this.copyMessage);
+
+      setTimeout(() => {
+        this.copyMessage = '';
+      }, 2000);
+    }
+  }
+
+  private handleRateLimitError(error: HttpErrorResponse): void {
+    if (error.status === 403) {
+      console.error('Rate limit exceeded');
+    } else if (error.status === 404) {
+      console.error('User repository not found');
+    } else {
+      console.error('Something went wrong');
+    }
+    this.isLoading = false;
+  }
+
   private fetchRepoDetails(): void {
     this.isLoading = true;
     if (this.userDetails && this.userDetails.login) {
@@ -102,11 +134,8 @@ export class UserDetailsComponent implements OnInit {
         .getRepos(this.userDetails.login, this.currentPage, this.limit)
         .pipe(
           catchError((error: HttpErrorResponse) => {
-            if (error.status === 404) {
-              return throwError('User repository not found');
-            } else {
-              return throwError('Something went wrong');
-            }
+            this.handleRateLimitError(error);
+            return of(null);
           })
         )
         .subscribe((userRepo: RepoDetailsInterface[] | null) => {
@@ -128,6 +157,7 @@ export class UserDetailsComponent implements OnInit {
             });
           } else {
             this.repoDetails = [];
+            this.isLoading = false;
           }
         });
     }
