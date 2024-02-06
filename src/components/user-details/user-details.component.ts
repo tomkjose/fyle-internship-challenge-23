@@ -16,9 +16,10 @@ import { ToastService } from '../../app/services/toast.service';
   styleUrls: ['./user-details.component.scss'],
 })
 export class UserDetailsComponent implements OnInit {
-  limit: number = 6;
+  defaultPageSize: number = 10;
   currentPage: number = 1;
-  pageSize: number = 10;
+  pageSize: number = this.defaultPageSize;
+  pageSizeOptions: number[] = [10, 20, 50, 100];
   totalPages: number = 0;
   userDetails: UserDetailsInterface | null = null;
   repoDetails: RepoDetailsInterface[] | null = [];
@@ -44,13 +45,22 @@ export class UserDetailsComponent implements OnInit {
 
         if (userDetails && userDetails.login && userDetails.public_repos) {
           this.totalPages = Math.ceil(
-            Number(userDetails.public_repos) / this.limit
+            Number(userDetails.public_repos) / this.pageSize
           );
           this.generatePageNumbers();
           this.fetchRepoDetails();
         }
       }
     );
+  }
+
+  changePageSize(): void {
+    this.currentPage = 1;
+    this.totalPages = Math.ceil(
+      Number(this.userDetails?.public_repos) / this.pageSize
+    );
+    this.generatePageNumbers();
+    this.fetchRepoDetails();
   }
 
   generatePageNumbers(): void {
@@ -85,14 +95,14 @@ export class UserDetailsComponent implements OnInit {
   }
 
   previousPage(): void {
-    if (this.currentPage > 0) {
+    if (this.currentPage > 1) {
       this.currentPage--;
       this.fetchRepoDetails();
     }
   }
 
   nextPage(): void {
-    if (this.currentPage + 1 < this.totalPages) {
+    if (this.currentPage < this.totalPages) {
       this.currentPage++;
       this.fetchRepoDetails();
     }
@@ -131,7 +141,7 @@ export class UserDetailsComponent implements OnInit {
     this.isLoading = true;
     if (this.userDetails && this.userDetails.login) {
       this.apiService
-        .getRepos(this.userDetails.login, this.currentPage, this.limit)
+        .getRepos(this.userDetails.login, this.currentPage, this.pageSize)
         .pipe(
           catchError((error: HttpErrorResponse) => {
             this.handleRateLimitError(error);
@@ -152,8 +162,8 @@ export class UserDetailsComponent implements OnInit {
                 if (repoLanguages.length > 0 && this.repoDetails) {
                   this.repoDetails[index].languages = repoLanguages;
                 }
-                this.isLoading = false;
               });
+              this.isLoading = false;
             });
           } else {
             this.repoDetails = [];

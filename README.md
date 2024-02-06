@@ -1,3 +1,23 @@
+# API Service Unit Testing Documentation
+
+## Purpose:
+
+The purpose of this document is to outline the unit testing strategies and procedures for testing the ApiService in an Angular application.
+
+## Testing Framework:
+
+We use Angular's built-in testing framework along with Jasmine for writing and running unit tests.
+
+## File Location:
+
+The unit tests for the ApiService are located in the file app/services/api.service.spec.ts.
+
+## Running the Tests:
+
+To run the tests for the ApiService, execute the following command in the terminal:
+
+     ng test --include='**/app/services/api.service.spec.ts'
+
 # Fyle Frontend Challenge
 
 ## Who is this for?
@@ -6,19 +26,19 @@ This challenge is meant for candidates who wish to intern at Fyle and work with 
 
 ## Why work at Fyle?
 
-Fyle is a fast-growing Expense Management SaaS product. We are ~40 strong engineering team at the moment. 
+Fyle is a fast-growing Expense Management SaaS product. We are ~40 strong engineering team at the moment.
 
 We are an extremely transparent organization. Check out our [careers page](https://careers.fylehq.com) that will give you a glimpse of what it is like to work at Fyle. Also, check out our Glassdoor reviews [here](https://www.glassdoor.co.in/Reviews/Fyle-Reviews-E1723235.htm). You can read stories from our teammates [here](https://stories.fylehq.com).
 
 ## Challenge outline
 
-This challenge involves implementing application using github api. 
+This challenge involves implementing application using github api.
 
 The services that you need to use are already implemented - check out ApiService.
 
 You can see details of this challenge [here](https://fyleuniverse.notion.site/fyleuniverse/Fyle-Frontend-development-challenge-cb5085e5e0864e769e7b98c694400aaa)
 
-__Note__ - This challenge is in angular. We work on angular frameworks & after you join we expect the same from you. Hence it is required to complete this assignement in angular itself.
+**Note** - This challenge is in angular. We work on angular frameworks & after you join we expect the same from you. Hence it is required to complete this assignement in angular itself.
 
 ## What happens next?
 
@@ -30,8 +50,9 @@ You will hear back within 48 hours from us via email.
 2. Clone the forked repository and proceed with steps mentioned below.
 
 ### Install requirements
-* Install angular cli [Ref](https://angular.io/cli)
-* `npm install` in this repository 
+
+- Install angular cli [Ref](https://angular.io/cli)
+- `npm install` in this repository
 
 ## Development server
 

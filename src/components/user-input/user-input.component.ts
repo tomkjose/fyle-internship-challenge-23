@@ -40,7 +40,7 @@ export class UserInputComponent implements OnInit {
           if (error.status === 404) {
             this.userNotFound = true;
             this.dataService.setUserNotFound(false);
-            // console.log('userNotFound', this.userNotFound);
+
             return throwError('User not found');
           } else {
             return throwError('Something went wrong');

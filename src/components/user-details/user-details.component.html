@@ -31,11 +31,24 @@
         userDetails.twitter_username
       }}
     </div>
+
     <div *ngIf="userDetails.html_url" class="text-md py-2 px-4 md:px-0 xl:px-0">
       <i class="fa-solid fa-link" style="color: #000000"></i>
       <span class="px-2 cursor-pointer" (click)="copyToClipboard()">{{
         userDetails.html_url
       }}</span>
+    </div>
+    <div class="flex justify-end my-4">
+      <span class="mr-2">Repositories per page:</span>
+      <select
+        [(ngModel)]="pageSize"
+        (change)="changePageSize()"
+        class="border border rounded-lg border-gray-300"
+      >
+        <option *ngFor="let option of pageSizeOptions" [value]="option">
+          {{ option }}
+        </option>
+      </select>
     </div>
   </div>
 </div>

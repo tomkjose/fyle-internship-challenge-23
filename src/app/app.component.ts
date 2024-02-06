@@ -8,7 +8,7 @@ import { ApiService } from './services/api.service';
 })
 export class AppComponent implements OnInit {
   constructor(private apiService: ApiService) {}
-
+  title = 'fyle-frontend-challenge';
   ngOnInit() {
     // this.apiService.getUser('johnpapa').subscribe(console.log);
   }
